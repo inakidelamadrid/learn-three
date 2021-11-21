@@ -1,5 +1,6 @@
 import './style.css'
 import * as THREE from 'three';
+import Stats from 'three/examples/jsm/libs/stats.module'
 
 const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
@@ -8,7 +9,11 @@ const scene = new THREE.Scene();
     0.1, // near clipping plane
     1000, // far clipping plane
   );
-  const renderer = new THREE.WebGLRenderer(); // webgl renderer or others for older browsers
+  const renderer = new THREE.WebGLRenderer();
+  renderer.domElement.style.position = 'fixed';
+  renderer.domElement.style.top = '0px'; 
+  renderer.domElement.style.left = '0px'; 
+  // webgl renderer or others for older browsers
   renderer.setClearColor(0xEEEEEE, 1.0); // set background color
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true; // enable shadow
@@ -65,6 +70,12 @@ const scene = new THREE.Scene();
 
   let step = 0
 
+
+  const stats = new Stats();
+  stats.showPanel(0);
+
+  document.querySelector('#app').append(stats.dom)
+
   function renderScene() {
     cube.rotation.x += 0.02
     cube.rotation.y += 0.02
@@ -75,6 +86,7 @@ const scene = new THREE.Scene();
     sphere.position.y = 2 + 10 * Math.abs(Math.sin(step))
     requestAnimationFrame(renderScene);
     renderer.render(scene, camera);
+    stats.update();
   }
   // Initiate function or other initializations here
   renderScene();
